@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Perfect Day</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF6E9;
+    --ink:#2B2340;
+    --coral:#FF6F61;
+    --teal:#2FBFA4;
+    --yellow:#FFC93C;
+    --violet:#6C5CE7;
+    --violet-deep:#4B3FA8;
+    --line: rgba(43,35,64,0.14);
+    --card-bg: #FFFFFF;
+    --shadow: 6px 6px 0px rgba(43,35,64,0.9);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Nunito', sans-serif;
+    overflow-x:hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  h1,h2,h3, .display{
+    font-family:'Baloo 2', sans-serif;
+    font-weight:800;
+    letter-spacing:0.2px;
+    margin:0;
+  }
+
+  a, button{font-family:inherit;}
+
+  ::selection{background:var(--yellow); color:var(--ink);}
+
+  :focus-visible{
+    outline: 3px solid var(--violet);
+    outline-offset: 3px;
+  }
+
+  .wrap{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,246,233,0.88);
+    backdrop-filter: blur(6px);
+    border-bottom:2px solid var(--ink);
+  }
+  nav .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-top:14px; padding-bottom:14px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-size:1.25rem;
+  }
+  .brand .dot{
+    width:14px; height:14px; border-radius:50%;
+    background: conic-gradient(from 90deg, var(--yellow), var(--coral), var(--violet), var(--teal), var(--yellow));
+    animation: spin 6s linear infinite;
+    flex-shrink:0;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg);} }
+  nav ul{
+    list-style:none; display:flex; gap:22px; margin:0; padding:0;
+  }
+  nav a{
+    color:var(--ink); text-decoration:none; font-weight:700; font-size:0.95rem;
+    padding:6px 4px; border-bottom:3px solid transparent;
+  }
+  nav a:hover{ border-bottom:3px solid var(--coral); }
+  @media (max-width:640px){ nav ul{gap:12px;} nav a{font-size:0.82rem;} }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:64px 0 40px;
+    overflow:hidden;
+  }
+  .hero .wrap{
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap:40px;
+    align-items:center;
+  }
+  @media (max-width:820px){ .hero .wrap{grid-template-columns:1fr;} }
+
+  .kicker{
+    font-size:1.05rem;
+    color:var(--violet-deep);
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .hero h1{
+    font-size:clamp(2.4rem, 5.4vw, 4.1rem);
+    line-height:1.03;
+    color:var(--ink);
+  }
+  .hero h1 .sw{
+    display:inline-block;
+    position:relative;
+  }
+  .hero h1 .sw::after{
+    content:"";
+    position:absolute; left:-4px; right:-4px; bottom:6px; height:0.42em;
+    background:var(--yellow);
+    z-index:-1;
+    transform:skewX(-8deg);
+  }
+  .hero p.lede{
+    margin-top:18px;
+    font-size:1.15rem;
+    line-height:1.6;
+    max-width:46ch;
+    color:#463A5E;
+  }
+  .hero .cta-row{
+    margin-top:28px;
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 22px;
+    border-radius:14px;
+    border:2.5px solid var(--ink);
+    font-weight:800;
+    font-size:1rem;
+    cursor:pointer;
+    background:var(--card-bg);
+    box-shadow: var(--shadow);
+    transition: transform 0.12s ease;
+    color:var(--ink);
+    text-decoration:none;
+  }
+  .btn:hover{ transform: translate(-2px,-2px); }
+  .btn:active{ transform: translate(1px,1px); box-shadow:2px 2px 0px rgba(43,35,64,0.9); }
+  .btn.primary{ background:var(--coral); color:#fff; }
+  .btn.teal{ background:var(--teal); color:#fff; }
+
+  .sun-scene{
+    position:relative;
+    aspect-ratio: 1/1;
+    max-width:360px;
+    margin:0 auto;
+  }
+  .sun-core{
+    position:absolute; inset:22%;
+    border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #FFE07A, var(--yellow) 60%, #FFB13C 100%);
+    box-shadow: 0 0 0 6px rgba(255,201,60,0.25), 0 0 0 14px rgba(255,201,60,0.14);
+    animation: pulse 3.4s ease-in-out infinite;
+  }
+  @keyframes pulse{ 0%,100%{ transform:scale(1);} 50%{ transform:scale(1.045);} }
+  .ray{
+    position:absolute; left:50%; top:50%;
+    width:6px; height:26%;
+    background:var(--coral);
+    border-radius:6px;
+    transform-origin: 50% 190%;
+  }
+  .scene-face{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:3.6rem;
+    animation: bob 4s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-8px);} }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{ padding:70px 0; }
+  .section-head{ max-width:56ch; margin-bottom:38px; }
+  .section-head h2{ font-size:clamp(1.7rem,3.2vw,2.4rem); }
+  .section-head p{ margin-top:10px; font-size:1.05rem; color:#463A5E; line-height:1.6; }
+
+  #builder{ background:#FFF; border-top:2.5px solid var(--ink); border-bottom:2.5px solid var(--ink); }
+
+  .builder-grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:22px;
+  }
+  @media (max-width:720px){ .builder-grid{ grid-template-columns:1fr; } }
+
+  .category{
+    border:2.5px solid var(--ink);
+    border-radius:18px;
+    padding:18px;
+    background:var(--cream);
+  }
+  .category h3{ font-size:1.05rem; margin-bottom:12px; display:flex; align-items:center; gap:8px;}
+  .chip-row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .chip{
+    border:2px solid var(--ink);
+    background:#fff;
+    border-radius:999px;
+    padding:8px 14px;
+    font-weight:700;
+    font-size:0.92rem;
+    cursor:pointer;
+    transition: background 0.15s ease, transform 0.1s ease;
+  }
+  .chip:hover{ transform:translateY(-2px); }
+  .chip[aria-pressed="true"]{
+    background:var(--violet);
+    color:#fff;
+    border-color:var(--violet-deep);
+  }
+
+  .recipe-card{
+    margin-top:26px;
+    border:2.5px dashed var(--ink);
+    border-radius:18px;
+    padding:22px 24px;
+    background: repeating-linear-gradient(135deg, #FFF, #FFF 18px, #FFFBF0 18px, #FFFBF0 36px);
+  }
+  .recipe-card h4{ font-family:'Baloo 2'; font-size:1.1rem; margin-bottom:8px; }
+  #recipeText{ font-size:1.12rem; line-height:1.65; }
+  #recipeText .fill{ color: var(--violet-deep); font-weight:800; }
+
+  /* ---------- GAME ---------- */
+  #game{ background: var(--cream); }
+  .game-panel{
+    border:2.5px solid var(--ink);
+    border-radius:22px;
+    background:#fff;
+    box-shadow: var(--shadow);
+    padding:20px;
+  }
+  .game-hud{
+    display:flex; justify-content:space-between; align-items:center;
+    margin-bottom:14px; flex-wrap:wrap; gap:10px;
+  }
+  .hud-pill{
+    border:2px solid var(--ink);
+    border-radius:999px;
+    padding:6px 16px;
+    font-weight:800;
+    background:var(--yellow);
+  }
+  .hud-pill.time{ background:var(--teal); color:#fff; }
+  #gameField{
+    position:relative;
+    height:380px;
+    border:2px solid var(--ink);
+    border-radius:16px;
+    background: linear-gradient(180deg, #EAF7FF 0%, #FFF8E7 100%);
+    overflow:hidden;
+    touch-action:none;
+  }
+  .drop{
+    position:absolute;
+    top:-40px;
+    font-size:2.1rem;
+    background:none; border:none; cursor:pointer;
+    line-height:1;
+    padding:4px;
+    filter: drop-shadow(2px 3px 0px rgba(43,35,64,0.25));
+  }
+  .drop:hover{ transform:scale(1.08); }
+  #gameOverlay{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:14px;
+    background:rgba(255,246,233,0.94);
+    text-align:center;
+    padding:20px;
+  }
+  #gameOverlay p{ max-width:36ch; color:#463A5E; }
+  .game-note{ margin-top:12px; font-size:0.92rem; color:#5c507a; }
+
+  /* ---------- IDEOLOGY ---------- */
+  #ideology{
+    background: var(--ink);
+    color: #FBF6FF;
+    border-top:2.5px solid var(--ink);
+  }
+  #ideology .section-head p{ color:#D9CFF2; }
+  #ideology .section-head h2{ color:#fff; }
+  .manifesto{
+    display:grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap:46px;
+    align-items:start;
+  }
+  @media (max-width:820px){ .manifesto{ grid-template-columns:1fr; } }
+  .manifesto-mark{
+    font-family:'Baloo 2';
+    font-size:clamp(3rem,7vw,5.4rem);
+    line-height:0.9;
+    color:var(--yellow);
+  }
+  .manifesto-mark span{ display:block; color:var(--coral); }
+  .manifesto-body p{
+    font-size:1.08rem;
+    line-height:1.75;
+    color:#E7DFFB;
+    margin-bottom:18px;
+    max-width:58ch;
+  }
+  .manifesto-body p.pull{
+    font-family:'Baloo 2';
+    font-weight:700;
+    font-size:1.35rem;
+    color:#fff;
+    line-height:1.4;
+    border-left:4px solid var(--teal);
+    padding-left:18px;
+    margin:28px 0;
+  }
+
+  /* ---------- MOMENTS STRIP ---------- */
+  #moments{ background:var(--cream); }
+  .moment-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px,1fr));
+    gap:18px;
+  }
+  .moment-card{
+    border:2.5px solid var(--ink);
+    border-radius:18px;
+    padding:20px;
+    background:#fff;
+    transition: transform 0.15s ease;
+  }
+  .moment-card:hover{ transform: rotate(-1deg) translateY(-3px); }
+  .moment-card .emoji{ font-size:1.9rem; }
+  .moment-card h4{ font-size:1.02rem; margin:10px 0 6px; }
+  .moment-card p{ font-size:0.92rem; color:#5c507a; line-height:1.5; margin:0; }
+  .moment-card:nth-child(1){ background:#FFF0EC; }
+  .moment-card:nth-child(2){ background:#EAFBF6; }
+  .moment-card:nth-child(3){ background:#FFF7E0; }
+  .moment-card:nth-child(4){ background:#F1EEFF; }
+
+  footer{
+    padding:36px 0 46px;
+    text-align:center;
+    color:#6a5c8a;
+    font-size:0.9rem;
+  }
+  footer .heart{ color:var(--coral); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot" aria-hidden="true"></span><span>A Perfect Day</span></div>
+    <ul>
+      <li><a href="#builder">Build one</a></li>
+      <li><a href="#game">Play</a></li>
+      <li><a href="#ideology">The idea</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <div class="kicker">a small interactive theory of good days</div>
+      <h1>What actually makes <span class="sw">a day</span> feel perfect?</h1>
+      <p class="lede">Not a beach in a brochure. Something smaller, stranger, and much easier to get today. Build one below, catch a few good moments in the game, then read the idea underneath it all.</p>
+      <div class="cta-row">
+        <a href="#builder" class="btn primary">Build my day →</a>
+        <a href="#game" class="btn teal">Play the moment-catcher</a>
+      </div>
+    </div>
+    <div class="sun-scene" aria-hidden="true">
+      <div class="sun-core"></div>
+      <div id="rays"></div>
+      <div class="scene-face">☀️</div>
+    </div>
+  </div>
+</header>
+
+<section id="builder">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Assemble your version of it</h2>
+      <p>There's no single correct perfect day — there's a recipe, and everyone's ratios are different. Pick one from each row.</p>
+    </div>
+
+    <div class="builder-grid">
+      <div class="category">
+        <h3>🌅 How it starts</h3>
+        <div class="chip-row" data-group="start">
+          <button class="chip" data-value="waking up without an alarm">waking up without an alarm</button>
+          <button class="chip" data-value="the first quiet coffee of the day">the first quiet coffee</button>
+          <button class="chip" data-value="a slow stretch before checking your phone">a slow stretch, phone still off</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3>🎨 What fills the middle</h3>
+        <div class="chip-row" data-group="middle">
+          <button class="chip" data-value="making something with your hands">making something with your hands</button>
+          <button class="chip" data-value="a long walk with nowhere to be">a long walk with nowhere to be</button>
+          <button class="chip" data-value="getting fully lost in one good project">getting lost in one good project</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3>🍊 What you taste</h3>
+        <div class="chip-row" data-group="food">
+          <button class="chip" data-value="a meal cooked slowly for no reason" >a meal cooked slowly, no reason</button>
+          <button class="chip" data-value="street food eaten standing up">street food eaten standing up</button>
+          <button class="chip" data-value="fruit that's exactly ripe">fruit that's exactly ripe</button>
+        </div>
+      </div>
+
+      <div class="category">
+        <h3>🌙 How it ends</h3>
+        <div class="chip-row" data-group="end">
+          <button class="chip" data-value="one real conversation, no phones on the table">one real conversation, phones away</button>
+          <button class="chip" data-value="reading until your eyes get heavy">reading until your eyes get heavy</button>
+          <button class="chip" data-value="stepping outside to look at the sky">stepping outside to look at the sky</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="recipe-card">
+      <h4>Your recipe so far</h4>
+      <p id="recipeText">It starts with <span class="fill" id="fStart">???</span>, moves into <span class="fill" id="fMiddle">???</span>, tastes like <span class="fill" id="fFood">???</span>, and ends with <span class="fill" id="fEnd">???</span>.</p>
+    </div>
+  </div>
+</section>
+
+<section id="game">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Catch the good moments</h2>
+      <p>Good days are just ordinary moments you actually noticed. Click the sun, flowers, and coffee before they fall. Leave the grey clouds alone — they cost you a moment caught.</p>
+    </div>
+
+    <div class="game-panel">
+      <div class="game-hud">
+        <span class="hud-pill">Moments caught: <span id="score">0</span></span>
+        <span class="hud-pill time">Time: <span id="timeLeft">30</span>s</span>
+        <button class="btn primary" id="startBtn" style="padding:8px 18px;">Start</button>
+      </div>
+      <div id="gameField">
+        <div id="gameOverlay">
+          <h3>Ready when you are</h3>
+          <p>30 seconds. Click the good stuff, skip the grey clouds. See how many moments you can catch.</p>
+        </div>
+      </div>
+      <p class="game-note">Tip: the moments fall faster the longer you play — much like actual days.</p>
+    </div>
+  </div>
+</section>
+
+<section id="ideology">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>The idea underneath all of this</h2>
+      <p>Here's what this whole page is quietly arguing.</p>
+    </div>
+    <div class="manifesto">
+      <div class="manifesto-mark">no such<span>thing.</span></div>
+      <div class="manifesto-body">
+        <p>There is no perfect day waiting somewhere out there for you to finally earn it. Not on the trip you're saving for, not after the promotion, not once things finally calm down. That version of "perfect" is always scheduled for later, which means it's designed to never arrive.</p>
+        <p class="pull">A perfect day isn't found. It's assembled, on purpose, out of moments too small to brag about.</p>
+        <p>What the builder above and the little game are both pointing at is the same idea: perfection isn't a size of event, it's a quality of attention. A cup of coffee drunk while actually tasting it beats an expensive dinner spent half-checking your phone. The catching game gives you thirty seconds and asks you to notice what's falling past you right now — which is, uncomfortably, also just what a normal Tuesday is doing.</p>
+        <p>So the real ideology here is small and a little defiant: stop auditioning days for the role of "perfect" and start paying attention to the one you're already in. Most of them qualify. You just weren't looking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="moments">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Four proofs, in case you need evidence</h2>
+    </div>
+    <div class="moment-grid">
+      <div class="moment-card">
+        <div class="emoji">☕</div>
+        <h4>The five-minute coffee</h4>
+        <p>Nothing is being solved. Nothing needs to be. That's the whole point of it.</p>
+      </div>
+      <div class="moment-card">
+        <div class="emoji">🌦️</div>
+        <h4>Getting caught in rain</h4>
+        <p>You didn't plan for it, so there's no version of the plan it could ruin.</p>
+      </div>
+      <div class="moment-card">
+        <div class="emoji">📖</div>
+        <h4>One more chapter</h4>
+        <p>You said you'd stop two chapters ago. You were right to keep going.</p>
+      </div>
+      <div class="moment-card">
+        <div class="emoji">🌙</div>
+        <h4>The last look at the sky</h4>
+        <p>Free, available every night, and almost nobody stops for it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  made with a little too much <span class="heart">♥</span> and a strong opinion about coffee
+</footer>
+
+<script>
+// --- decorative sun rays ---
+(function(){
+  const rayContainer = document.getElementById('rays');
+  const count = 10;
+  for(let i=0;i<count;i++){
+    const r = document.createElement('div');
+    r.className = 'ray';
+    r.style.transform = `translate(-50%,-50%) rotate(${(360/count)*i}deg)`;
+    r.style.opacity = 0.55;
+    rayContainer.appendChild(r);
+  }
+})();
+
+// --- day builder ---
+(function(){
+  const groups = document.querySelectorAll('.chip-row');
+  const targetMap = { start: 'fStart', middle: 'fMiddle', food: 'fFood', end: 'fEnd' };
+  groups.forEach(group => {
+    group.addEventListener('click', (e) => {
+      const btn = e.target.closest('.chip');
+      if(!btn) return;
+      group.querySelectorAll('.chip').forEach(c => c.setAttribute('aria-pressed','false'));
+      btn.setAttribute('aria-pressed','true');
+      const key = group.dataset.group;
+      document.getElementById(targetMap[key]).textContent = btn.dataset.value;
+    });
+  });
+})();
+
+// --- moment-catcher game ---
+(function(){
+  const field = document.getElementById('gameField');
+  const overlay = document.getElementById('gameOverlay');
+  const scoreEl = document.getElementById('score');
+  const timeEl = document.getElementById('timeLeft');
+  const startBtn = document.getElementById('startBtn');
+
+  const GOOD = ['☀️','🌸','☕','⭐','🍉','🎈'];
+  const BAD = ['☁️','🌧️'];
+
+  let score = 0;
+  let timeLeft = 30;
+  let spawnDelay = 900;
+  let running = false;
+  let spawnTimer = null;
+  let clockTimer = null;
+
+  function resetState(){
+    score = 0; timeLeft = 30; spawnDelay = 900;
+    scoreEl.textContent = score;
+    timeEl.textContent = timeLeft;
+    field.querySelectorAll('.drop').forEach(d => d.remove());
+  }
+
+  function spawnDrop(){
+    const isBad = Math.random() < 0.28;
+    const symbol = isBad
+      ? BAD[Math.floor(Math.random()*BAD.length)]
+      : GOOD[Math.floor(Math.random()*GOOD.length)];
+
+    const el = document.createElement('button');
+    el.className = 'drop';
+    el.textContent = symbol;
+    el.style.left = Math.random()*88 + '%';
+    field.appendChild(el);
+
+    const fieldHeight = field.clientHeight;
+    const duration = 2600 + Math.random()*900;
+    const start = performance.now();
+
+    function fall(now){
+      const elapsed = now - start;
+      const progress = elapsed/duration;
+      if(progress >= 1 || !el.isConnected){ el.remove(); return; }
+      el.style.top = (progress * (fieldHeight - 40)) + 'px';
+      requestAnimationFrame(fall);
+    }
+    requestAnimationFrame(fall);
+
+    el.addEventListener('click', () => {
+      if(!running) return;
+      if(isBad){
+        score = Math.max(0, score-1);
+      } else {
+        score += 1;
+      }
+      scoreEl.textContent = score;
+      el.remove();
+    });
+
+    setTimeout(() => { if(el.isConnected) el.remove(); }, duration + 50);
+  }
+
+  function tickClock(){
+    timeLeft -= 1;
+    timeEl.textContent = timeLeft;
+    if(timeLeft <= 0){ endGame(); }
+  }
+
+  function scheduleSpawn(){
+    spawnTimer = setTimeout(() => {
+      if(!running) return;
+      spawnDrop();
+      spawnDelay = Math.max(380, spawnDelay - 12);
+      scheduleSpawn();
+    }, spawnDelay);
+  }
+
+  function startGame(){
+    resetState();
+    running = true;
+    overlay.style.display = 'none';
+    startBtn.textContent = 'Restart';
+    clockTimer = setInterval(tickClock, 1000);
+    scheduleSpawn();
+  }
+
+  function endGame(){
+    running = false;
+    clearTimeout(spawnTimer);
+    clearInterval(clockTimer);
+    field.querySelectorAll('.drop').forEach(d => d.remove());
+    overlay.style.display = 'flex';
+    overlay.innerHTML = `
+      <h3>${score} good moments caught</h3>
+      <p>${score >= 20 ? "You're clearly someone who notices things. That's most of the trick." : "Not bad — the good ones sneak by fast. That's kind of the whole point."}</p>
+    `;
+  }
+
+  startBtn.addEventListener('click', startGame);
+})();
+</script>
+
+</body>
+</html>
